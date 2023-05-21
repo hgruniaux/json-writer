@@ -9,7 +9,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(json_writer_unittest "impl.cpp" "write_null_test.cpp" "write_bool_test.cpp" "write_object_test.cpp" "write_array_test.cpp" "write_string_test.cpp" "write_number_test.cpp" "write_field_test.cpp")
+add_executable(json_writer_unittest "impl.cpp" "write_null_test.cpp" "write_bool_test.cpp" "write_object_test.cpp" "write_array_test.cpp" "write_string_test.cpp" "write_integer_test.cpp" "write_float_test.cpp" "write_field_test.cpp")
 target_link_libraries(json_writer_unittest GTest::gtest_main)
 target_include_directories(json_writer_unittest PRIVATE "../")
 

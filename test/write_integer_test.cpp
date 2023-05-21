@@ -26,7 +26,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(WriteNumberTest, integer_uncolored)
+TEST(WriteIntegerTest, integer_uncolored)
 {
   JsonWriter writer;
   writer.set_use_colors(false);
@@ -34,7 +34,7 @@ TEST(WriteNumberTest, integer_uncolored)
   EXPECT_EQ(writer.get_buffer(), "42");
 }
 
-TEST(WriteNumberTest, integer_default_color)
+TEST(WriteIntegerTest, integer_default_color)
 {
   JsonWriter writer;
   writer.set_use_colors(true);
@@ -42,7 +42,7 @@ TEST(WriteNumberTest, integer_default_color)
   EXPECT_EQ(writer.get_buffer(), COLOR_NUMBER "42" COLOR_RESET);
 }
 
-TEST(WriteNumberTest, integer_custom_color)
+TEST(WriteIntegerTest, integer_custom_color)
 {
   JsonWriter writer;
   writer.set_use_colors(true);
@@ -51,7 +51,7 @@ TEST(WriteNumberTest, integer_custom_color)
   EXPECT_EQ(writer.get_buffer(), COLOR_PREFIX "0;1;2" COLOR_SUFFIX "42" COLOR_RESET);
 }
 
-TEST(WriteNumberTest, negative_integer)
+TEST(WriteIntegerTest, negative_integer)
 {
   JsonWriter writer;
   writer.set_use_colors(false);
@@ -59,7 +59,7 @@ TEST(WriteNumberTest, negative_integer)
   EXPECT_EQ(writer.get_buffer(), "-42");
 }
 
-TEST(WriteNumberTest, zero)
+TEST(WriteIntegerTest, zero)
 {
   JsonWriter writer;
   writer.set_use_colors(false);
@@ -67,35 +67,10 @@ TEST(WriteNumberTest, zero)
   EXPECT_EQ(writer.get_buffer(), "0");
 }
 
-TEST(WriteNumberTest, big_integer)
+TEST(WriteIntegerTest, big_integer)
 {
   JsonWriter writer;
   writer.set_use_colors(false);
   writer.write_integer(UINT64_MAX);
   EXPECT_EQ(writer.get_buffer(), "18446744073709551615");
-}
-
-TEST(WriteNumberTest, float_uncolored)
-{
-  JsonWriter writer;
-  writer.set_use_colors(false);
-  writer.write_float(3.14);
-  EXPECT_EQ(writer.get_buffer(), "3.14");
-}
-
-TEST(WriteNumberTest, float_default_color)
-{
-  JsonWriter writer;
-  writer.set_use_colors(true);
-  writer.write_float(3.14);
-  EXPECT_EQ(writer.get_buffer(), COLOR_NUMBER "3.14" COLOR_RESET);
-}
-
-TEST(WriteNumberTest, float_custom_color)
-{
-  JsonWriter writer;
-  writer.set_use_colors(true);
-  writer.get_colors().number = "1;2";
-  writer.write_float(3.14);
-  EXPECT_EQ(writer.get_buffer(), COLOR_PREFIX "0;1;2" COLOR_SUFFIX "3.14" COLOR_RESET);
 }
