@@ -109,3 +109,17 @@ TEST(WriteArrayTest, trailing_comma_compact)
 
   EXPECT_EQ(writer.get_buffer(), "[null,null]");
 }
+
+TEST(WriteArrayTest, write_array_with_func)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(false);
+
+  int values[] = { 5, 10, 28 };
+  writer.write_array(std::begin(values), std::end(values), [](JsonWriter& writer, auto item) {
+    writer.write_integer(item);
+  });
+
+  EXPECT_EQ(writer.get_buffer(), "[5,10,28]");
+}

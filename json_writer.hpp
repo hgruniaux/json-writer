@@ -120,6 +120,20 @@ public:
     end_field();
   }
 
+  template<class It, class F>
+  void write_array(It begin, It end, F func)
+  {
+    begin_array();
+
+    for (auto it = begin; it != end; ++it) {
+      begin_array_item();
+      func(*this, *it);
+      end_array_item();
+    }
+
+    end_array();
+  }
+
 private:
   template<typename T>
   static constexpr int log10ceil(T num)
