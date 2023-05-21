@@ -75,3 +75,21 @@ TEST(WriteBoolTest, write_bool_false_custom_color)
   writer.write_bool(false);
   EXPECT_EQ(writer.get_buffer(), COLOR_PREFIX "0;1;2" COLOR_SUFFIX "false" COLOR_RESET);
 }
+
+TEST(WriteBoolTest, write_bool_field_true)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_bool_field("foo", true);
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": true,\n");
+}
+
+TEST(WriteBoolTest, write_bool_field_false)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_bool_field("foo", false);
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": false,\n");
+}

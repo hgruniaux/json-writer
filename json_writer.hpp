@@ -57,20 +57,12 @@ public:
   void begin_array_item();
   void end_array_item();
 
-  void begin_field(const char* name) { begin_field(name, strlen(name)); }
-  void begin_field(const char* name, size_t name_len);
-  void begin_field(const std::string& name) { begin_field(name.c_str(), name.size()); }
-  void begin_field(std::string_view name) { begin_field(name.data(), name.size()); }
+  void begin_field(std::string_view name);
   void end_field();
 
   void write_null();
   void write_bool(bool value);
-
-  void write_string(const char* value) { write_string(value, strlen(value)); }
-  void write_string(const char* value, size_t value_len);
-  void write_string(const std::string& value) { write_string(value.c_str(), value.size()); }
-  void write_string(std::string_view value) { write_string(value.data(), value.size()); }
-
+  void write_string(std::string_view value);
   template<class T>
   void write_integer(T value)
   {
@@ -82,7 +74,6 @@ public:
     m_buffer.append(buffer);
     reset_color();
   }
-
   template<class T>
   void write_float(T value)
   {
@@ -94,6 +85,39 @@ public:
     set_color(m_colors.number);
     m_buffer.append(buffer);
     reset_color();
+  }
+
+  void write_null_field(std::string_view name)
+  {
+    begin_field(name);
+    write_null();
+    end_field();
+  }
+  void write_bool_field(std::string_view name, bool value)
+  {
+    begin_field(name);
+    write_bool(value);
+    end_field();
+  }
+  void write_string_field(std::string_view name, std::string_view value)
+  {
+    begin_field(name);
+    write_string(value);
+    end_field();
+  }
+  template<class T>
+  void write_integer_field(std::string_view name, T value)
+  {
+    begin_field(name);
+    write_integer(value);
+    end_field();
+  }
+  template<class T>
+  void write_float_field(std::string_view name, T value)
+  {
+    begin_field(name);
+    write_float(value);
+    end_field();
   }
 
 private:
@@ -108,7 +132,7 @@ private:
 
   void write_indent();
   void write_comma();
-  void write_quoted_string(const char* value, size_t value_len);
+  void write_quoted_string(std::string_view value);
 
   void remove_trailing_comma();
 
@@ -172,12 +196,12 @@ JsonWriter::end_array_item()
 }
 
 void
-JsonWriter::begin_field(const char* name, size_t name_len)
+JsonWriter::begin_field(std::string_view name)
 {
   write_indent();
 
   set_color(m_colors.field);
-  write_quoted_string(name, name_len);
+  write_quoted_string(name);
   m_buffer.push_back(':');
   reset_color();
 
@@ -211,10 +235,10 @@ JsonWriter::write_bool(bool value)
 }
 
 void
-JsonWriter::write_string(const char* value, size_t value_len)
+JsonWriter::write_string(std::string_view value)
 {
   set_color(m_colors.string);
-  write_quoted_string(value, value_len);
+  write_quoted_string(value);
   reset_color();
 }
 
@@ -259,11 +283,11 @@ JsonWriter::write_comma()
 }
 
 void
-JsonWriter::write_quoted_string(const char* value, size_t value_len)
+JsonWriter::write_quoted_string(std::string_view value)
 {
   m_buffer.append("\"");
 
-  for (size_t i = 0; i < value_len; ++i) {
+  for (size_t i = 0; i < value.size(); ++i) {
     const char ch = value[i];
     switch (ch) {
       case '"':

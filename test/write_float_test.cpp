@@ -50,3 +50,12 @@ TEST(WriteFloatTest, float_custom_color)
   writer.write_float(3.14);
   EXPECT_EQ(writer.get_buffer(), COLOR_PREFIX "0;1;2" COLOR_SUFFIX "3.14" COLOR_RESET);
 }
+
+TEST(WriteFloatTest, write_float_field)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_float_field("foo", 3.14);
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": 3.14,\n");
+}

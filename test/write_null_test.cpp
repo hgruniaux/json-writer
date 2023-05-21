@@ -50,3 +50,12 @@ TEST(WriteNullTest, write_null_custom_color)
   writer.write_null();
   EXPECT_EQ(writer.get_buffer(), COLOR_PREFIX "0;1;2" COLOR_SUFFIX "null" COLOR_RESET);
 }
+
+TEST(WriteNullTest, write_null_field)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_null_field("foo");
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": null,\n");
+}

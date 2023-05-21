@@ -74,3 +74,12 @@ TEST(WriteIntegerTest, big_integer)
   writer.write_integer(UINT64_MAX);
   EXPECT_EQ(writer.get_buffer(), "18446744073709551615");
 }
+
+TEST(WriteIntegerTest, write_integer_field)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_integer_field("foo", 42);
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": 42,\n");
+}

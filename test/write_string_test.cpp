@@ -66,3 +66,12 @@ TEST(WriteStringTest, classic)
   writer.write_string("foo\nbar");
   EXPECT_EQ(writer.get_buffer(), "\"foo\\nbar\"");
 }
+
+TEST(WriteStringTest, write_string_field)
+{
+  JsonWriter writer;
+  writer.set_use_colors(false);
+  writer.set_pretty(true);
+  writer.write_string_field("foo", "bar");
+  EXPECT_EQ(writer.get_buffer(), "\"foo\": \"bar\",\n");
+}
