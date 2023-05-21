@@ -1,0 +1,12 @@
+# IDE files and directories.
+.vs/
+.vscode/
+.cache/
+
+# Build directories.
+[Bb]uild/
+[Oo]ut/
+[Rr]elease/
+[Dd]ebug/
+
+CMakePresets.json
